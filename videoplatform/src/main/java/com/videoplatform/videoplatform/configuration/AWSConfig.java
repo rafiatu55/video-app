@@ -1,32 +1,39 @@
-package com.videoplatform.videoplatform.configuration;
 
-import lombok.Value;
+package com.videoplatform.videoplatform.configuration;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import software.amazon.awssdk.core.sync.RequestBody;
 
 @Configuration
-public class AWSConfig {
+public class AWSConfig{
+
+    @Value("${aws.s3.bucket.name}")
+    private String bucketName;
+
     @Value("${aws.accessKeyId}")
     private String accessKey;
 
-    @Value("${aws.secretKey}")
-    private String secretKey
-    @Value("${aws.region}")
+    @Value("${aws.s3.region}")
     private String region;
 
-    @Bean
-    public S3Client s3Client(){
+    @Value("${aws.secretAccessKey}")
+    private String secretKey;
 
-        AwsBasicCredntials awsCreds = AwsBasicCredntials.create(accessKeyId, secretKey);
-        return S3Client.builder()
-                .region(Region.of(value))
-                .credentialsProvider(StaticCredentialsProvider.create(awsCreds))
+    @Bean
+    public AmazonS3 amazonS3() {
+        AWSCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(
+                new BasicAWSCredentials(accessKey, secretKey));
+
+
+        return AmazonS3ClientBuilder.standard()
+                .withCredentials(credentialsProvider)
+                .withRegion(region)
                 .build();
+
     }
 }
