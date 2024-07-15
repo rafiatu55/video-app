@@ -16,13 +16,14 @@ import java.util.List;
 
 @Service
 public class VideoService {
+
     @Autowired
     private S3Client s3Client;
 
     @Autowired
     private VideoRepository videoRepository;
 
-    @Value("${aws.s3.bucket}")
+    @Value("${aws.s3.bucket.name}")
     private String bucketName;
 
     public String uploadVideo(MultipartFile file, String title, String description) throws IOException {
@@ -52,4 +53,23 @@ public class VideoService {
         return videoRepository.findAll();
     }
 
+    public Video getPreviousVideo(Integer id) {
+        List<Video> videos = getAllVideos();
+        for (int i = 1; i < videos.size(); i++) {
+            if (videos.get(i).getId().equals(id)) {
+                return videos.get(i - 1);
+            }
+        }
+        return null;
+    }
+
+    public Video getNextVideo(Integer id) {
+        List<Video> videos = getAllVideos();
+        for (int i = 0; i < videos.size() - 1; i++) {
+            if (videos.get(i).getId().equals(id)) {
+                return videos.get(i + 1);
+            }
+        }
+        return null;
+    }
 }

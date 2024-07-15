@@ -40,25 +40,20 @@ public class VideoController {
     }
 
     @GetMapping("/{id}/previous")
-    public ResponseEntity<Video> getPreviousVideo(@PathVariable Long id) {
-        List<Video> videos = videoService.getAllVideos();
-        for (int i = 1; i < videos.size(); i++) {
-            if (videos.get(i).getId().equals(id)) {
-                return ResponseEntity.ok(videos.get(i - 1));
-            }
+    public ResponseEntity<Video> getPreviousVideo(@PathVariable Integer id) {
+        Video video = videoService.getPreviousVideo(id);
+        if (video != null) {
+            return ResponseEntity.ok(video);
         }
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/next")
-    public ResponseEntity<Video> getNextVideo(@PathVariable Long id) {
-        List<Video> videos = videoService.getAllVideos();
-        for (int i = 0; i < videos.size() - 1; i++) {
-            if (videos.get(i).getId().equals(id)) {
-                return ResponseEntity.ok(videos.get(i + 1));
-            }
+    public ResponseEntity<Video> getNextVideo(@PathVariable Integer id) {
+        Video video = videoService.getNextVideo(id);
+        if (video != null) {
+            return ResponseEntity.ok(video);
         }
         return ResponseEntity.noContent().build();
     }
-
 }
