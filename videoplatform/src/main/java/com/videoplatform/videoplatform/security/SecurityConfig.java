@@ -1,5 +1,8 @@
 package com.videoplatform.videoplatform.security;
 
+import com.videoplatform.videoplatform.controller.AdminController;
+import com.videoplatform.videoplatform.controller.ApiVideoController;
+import com.videoplatform.videoplatform.controller.UserController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,10 +21,17 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
+    private final AdminController adminController;
+    private final ApiVideoController apiVideoController;
+    private final UserController userController;
+
 
     @Autowired
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService, AdminController adminController, ApiVideoController apiVideoController, UserController userController) {
         this.customUserDetailsService = customUserDetailsService;
+        this.adminController = adminController;
+        this.apiVideoController = apiVideoController;
+        this.userController = userController;
     }
 
     @Bean
@@ -29,24 +40,37 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/user/password/reset", "/api/user/password/reset/confirm").permitAll()
-                        .requestMatchers("/view/login", "/view/signup", "/view/password/reset", "/view/password/reset/confirm", "/view/verify").permitAll()
+                        .requestMatchers("/auth/home", "/auth/login", "/auth/signup", "/auth/forgotpassword", "/auth/reset-password", "/auth/password/resets/").permitAll()
                         .requestMatchers("/view/upload").hasRole("ADMIN")
-                        .requestMatchers("/view/home", "/view/video/").authenticated()
                         .requestMatchers("/api/user/create", "/api/user/verify", "/api/user/verify/confirm").permitAll()
                         .requestMatchers("/api/videos/upload").hasRole("ADMIN")
-                        .requestMatchers("/api/videos/").authenticated()
+                        .requestMatchers("/admin/").hasRole("ADMIN") // Restrict /admin/** to ROLE_ADMIN
+                        .requestMatchers("/api/videos/**").hasAnyRole("ADMIN", "USER") // Restrict /api/videos/** to both roles
+                        .requestMatchers( "user/video/**").authenticated()
+                        .requestMatchers("/user/").hasRole("USER")
+                        .requestMatchers("/admin/edit/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .formLogin(login -> login
-                        .loginPage("/login")
+                .formLogin(form -> form
+                        .loginPage("/auth/login")
+                        .loginProcessingUrl("/auth/login")
+                        .successHandler((request, response, authentication) -> {
+                            for (GrantedAuthority authority : authentication.getAuthorities()) {
+                                if (authority.getAuthority().equals("ROLE_ADMIN")) {
+                                    response.sendRedirect("/admin");
+                                    return;
+                                }
+                            }
+                            response.sendRedirect("/user"); // Assuming /user is the user dashboard page
+                        })
                         .permitAll()
-                        .defaultSuccessUrl("/view/home", true)
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutUrl("/auth/logout")
+                        .logoutSuccessUrl("/auth/login?logout")
                         .permitAll()
                 );
+
         return http.build();
     }
 

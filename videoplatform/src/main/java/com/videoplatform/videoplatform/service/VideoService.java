@@ -14,8 +14,13 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class VideoService {
+
+    private static final Logger logger = LoggerFactory.getLogger(VideoService.class);
 
     @Autowired
     private S3Client s3Client;
@@ -27,22 +32,35 @@ public class VideoService {
     private String bucketName;
 
     public String uploadVideo(MultipartFile file, String title, String description) throws IOException {
+        logger.info("Starting video upload process");
+
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        s3Client.putObject(PutObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(fileName)
-                        .build(),
-                RequestBody.fromBytes(file.getBytes()));
+        logger.info("Generated file name: {}", fileName);
 
-        String videoUrl = s3Client.utilities().getUrl(builder -> builder.bucket(bucketName).key(fileName)).toExternalForm();
+        try {
+            s3Client.putObject(PutObjectRequest.builder()
+                            .bucket(bucketName)
+                            .key(fileName)
+                            .build(),
+                    RequestBody.fromBytes(file.getBytes()));
+            logger.info("File uploaded to S3");
 
-        Video video = new Video();
-        video.setTitle(title);
-        video.setDescription(description);
-        video.setVideoUrl(videoUrl);
-        videoRepository.save(video);
+            String videoUrl = s3Client.utilities().getUrl(builder -> builder.bucket(bucketName).key(fileName)).toExternalForm();
+            logger.info("Generated video URL: {}", videoUrl);
 
-        return videoUrl;
+            Video video = new Video();
+            video.setTitle(title);
+            video.setDescription(description);
+            video.setVideoUrl(videoUrl);
+            video.setFileSize(file.getSize());
+            videoRepository.save(video);
+            logger.info("Video metadata saved to database");
+
+            return videoUrl;
+        } catch (Exception e) {
+            logger.error("Error during video upload process", e);
+            throw new IOException("Error uploading video", e);
+        }
     }
 
     public Video getVideo(Integer id) {
@@ -72,4 +90,12 @@ public class VideoService {
         }
         return null;
     }
+
+    public void updateVideo(Integer id, String title, String description) {
+        Video video = videoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Video not found"));
+        video.setTitle(title);
+        video.setDescription(description);
+        videoRepository.save(video);
+    }
+
 }
