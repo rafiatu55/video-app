@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.videoplatform.videoplatform.VideoPlatformApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 22.22 s -- in com.videoplatform.videoplatform.VideoPlatformApplicationTests

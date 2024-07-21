@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Video List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .video-list-container {
+            margin: 50px auto;
+            max-width: 800px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .video-item {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="video-list-container">
+        <h2 class="text-center">Video List</h2>
+        <div class="video-item" th:each="video : ${videos}">
+            <h3 th:text="${video.title}">Video Title</h3>
+            <p th:text="${video.description}">Video description...</p>
+            <a th:href="@{/videos/{id}(id=${video.id})}" class="btn btn-primary">Watch</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
