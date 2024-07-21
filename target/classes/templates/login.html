@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url('https://images.unsplash.com/photo-1511974035430-5de47d3b95da?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGJhY2tncm91bmR8ZW58MHx8fHwxNjEyNjI5NDI5&ixlib=rb-1.2.1&q=80&w=1080') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            margin: 0;
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            text-align: center;
+        }
+        .card-title {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.5rem;
+        }
+        .form-control {
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            background-color: #ff5722;
+            border-color: #ff5722;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #e64a19;
+            border-color: #e64a19;
+        }
+        .btn-link {
+            color: #ff5722;
+            text-decoration: none;
+        }
+        .btn-link:hover {
+            color: #e64a19;
+            text-decoration: underline;
+        }
+        .alert {
+            border-radius: 5px;
+        }
+        .logo {
+            width: 60px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="card-body">
+        <img src="https://img.icons8.com/ios-filled/50/ff5722/video.png" alt="Video Logo" class="logo"/>
+        <h3 class="card-title">Login</h3>
+        <form th:action="@{/auth/login}" method="post">
+            <div class="form-group">
+                <label for="username">Email</label>
+                <input type="email" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div th:if="${param.error}" class="alert alert-danger">
+                Invalid email or password.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success">
+                You have been logged out.
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+            <a th:href="@{/auth/forgotpassword}" class="btn btn-link">Forgot Password?</a>
+            <a th:href="@{/auth/signup}" class="btn btn-link">Don't have an account? Sign Up</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>
