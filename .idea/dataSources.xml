@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="video_platform_8xib@dpg-cprf3ndumphs73c4fpi0-a.oregon-postgres.render.com" uuid="cc7f50ed-3911-44d5-b39b-12bb338d5449">
+    <data-source source="LOCAL" name="video_platform_er8e@dpg-cqfquriju9rs73c2ms00-a.oregon-postgres.render.com " uuid="a5e599a4-ea36-4c89-88d0-b749899098ff">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <imported>true</imported>
-      <remarks>$PROJECT_DIR$/src/main/resources/application.properties</remarks>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://dpg-cprf3ndumphs73c4fpi0-a.oregon-postgres.render.com:5432/video_platform_8xib</jdbc-url>
+      <jdbc-url>jdbc:postgresql://dpg-cqfquriju9rs73c2ms00-a.oregon-postgres.render.com:5432/video_platform_er8e</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+        <property name="com.intellij.clouds.kubernetes.db.resource.type" value="Deployment" />
         <property name="com.intellij.clouds.kubernetes.db.container.port" />
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
