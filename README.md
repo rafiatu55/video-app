@@ -1,4 +1,4 @@
-#Video Platform built with <a href=" https://spring.io/projects/spring-boot /" target="_blank">SpringBoot Rest FrameWork</a> and <a href=" https://www.thymeleaf.org/ " target="_blank"> Thymeleaf
+# Video Platform built with <a href=" https://spring.io/projects/spring-boot /" target="_blank">SpringBoot Rest FrameWork</a> and <a href=" https://www.thymeleaf.org/ " target="_blank"> Thymeleaf </a>
 
 
 
@@ -11,15 +11,15 @@ The goal of the Video Platform project is to provide Paul Leonard with a bespoke
 
 
 ## Major Features 🔑
-###User Features
+### User Features
 1.	*Signup and Login*: Users can sign up and log in using an email and password. Account verification and a reset password feature for recovering lost passwords are included.
 2.	*Video Navigation*: Users can navigate through video pages using next and previous buttons. These buttons are hidden if no further videos are available in the respective direction.
 3.	*Video Sharing*: Users can share links to specific video pages.
-###Admin Features
+### Admin Features
 1.	*Admin Logo*: Admins can log in with an email and password.
 2.	*Video Upload*: Admins can upload videos with a title and description to the platform.
 3.	*Video Management*: Admins can manage uploaded videos, including editing titles and descriptions, and deleting videos if necessary.
-###Video Page Features
+### Video Page Features
 1.	*Single Video Display*: Each video page presents only one video.
 2.	*Navigation Button*: Next and previous buttons allow users to navigate through videos. These buttons are hidden if no further videos are available.
 3.	*Control Buttons*: Common control buttons (play, pause, volume, etc.) are available for users to interact with the video.
@@ -67,90 +67,115 @@ The goal of the Video Platform project is to provide Paul Leonard with a bespoke
 10.	Link Sharing Capability: Enabled link sharing for videos, allowing users to easily share video pages with others.
 
 ### API Endpoints
-•	### User Endpoint:
+* User Endpoint:
 POST /api/users
+```
 {
     "email": "user@example.com",
     "password": "password"
 }
-•	*Verify your account by email*:
+```
+
+* *Verify your account by email*:
 GET /api/users/verify/confirm?token={token}
-•	*Initiate password reset*:
+
+* *Initiate password reset*:
 POST /auth/forgotpassword
+```
 {
     "email": "user@example.com"
 }
-•	*Confirm password reset*:
+```
+
+* *Confirm password reset*:
 POST /auth/password/resets/confirms
+```
 {
     "token": "<reset_token>",
     "newPassword": "new-password",
     "confirmPassword": "confirm-password"
 }
-###Video Endpoints
-•	*Upload a new video (Admin only)*:
+```
+
+### Video Endpoints
+* *Upload a new video (Admin only)*:
 POST /api/videos
+```
 {
     "title": "Video Title",
     "description": "Video Description",
     "file": "<file_binary>"
 }
-•	*Get all videos*:
+```
+
+* *Get all videos*:
 GET /api/videos
-•	*Get a single video by ID*:
+
+* *Get a single video by ID*:
 GET /api/videos/{id}
-•	*Update video details (Admin only)*:
+
+* *Update video details (Admin only)*:
 PUT /api/videos/{id}
+```
 {
     "title": "Updated Title",
     "description": "Updated Description"
 }
-•	*Delete a video (Admin only)*:
+```
+
+* *Delete a video (Admin only)*:
 DELETE /api/videos/{id}
-###Navigation Endpoints
-•	*Get next video*:
+
+### Navigation Endpoints
+* *Get next video*:
 GET /api/videos/{id}/next
-•	*Get previous video*:
+* *Get previous video*:
 GET /api/videos/{id}/previous
-###Share Endpoints
-•	*Share video link*:
+
+### Share Endpoints
+* *Share video link*:
 POST /api/videos/{id}/share
+```
 {
     "email": "recipient@example.com"
 }
-###Admin Endpoints
-•	*Login as admin*:
+```
+
+### Admin Endpoints
+* *Login as admin*:
 POST /auth/admin/login
+```
 {
     "email": "admin@example.com",
     "password": "admin-password"
 }
-
+```
 
 ### Unit Tests
 The application includes unit tests to ensure all edge cases are handled properly. Here are the cases tested in the UserServiceTest and VideoServiceTest classes:
-###UserServiceTest
-•	*createUser*: Test user creation with valid inputs.
-•	*loginUser*: Test user login with correct credentials.
-•	*loginUser_withInvalidPassword*: Test user login with incorrect password.
-•	*confirmVerification*: Test account verification with a valid token.
-•	*confirmVerification_withExpiredToken*: Test account verification with an expired token.
-•	*initiatePasswordReset*: Test initiating a password reset with a valid email.
-•	*confirmPasswordReset*: Test confirming a password reset with a valid token and matching new passwords.
-•	*confirmPasswordReset_withInvalidToken*: Test confirming a password reset with an invalid token.
-###VideoServiceTest
-•	*uploadVideo*: Test video upload with valid inputs.
-•	*getAllVideos*: Test retrieving all videos from the database.
-•	*getVideoById*: Test retrieving a single video by its ID.
-•	*getVideoById_withInvalidId*: Test retrieving a video with an invalid ID.
-•	*updateVideo*: Test updating video details with valid inputs.
-•	*updateVideo_withInvalidId*: Test updating video details with an invalid ID.
-•	*deleteVideo*: Test deleting a video by its ID.
-•	*deleteVideo_withInvalidId*: Test deleting a video with an invalid ID.
-•	*getNextVideo*: Test retrieving the next video in the sequence.
-•	*getPreviousVideo*: Test retrieving the previous video in the sequence.
-•	*shareVideoLink*: Test sharing a video link via email with valid inputs.
-•	*shareVideoLink_withInvalidEmail*: Test sharing a video link with an invalid email address.
+### UserServiceTest
+* *createUser*: Test user creation with valid inputs.
+* *loginUser*: Test user login with correct credentials.
+* *loginUser_withInvalidPassword*: Test user login with incorrect password.
+* *confirmVerification*: Test account verification with a valid token.
+* *confirmVerification_withExpiredToken*: Test account verification with an expired token.
+* *initiatePasswordReset*: Test initiating a password reset with a valid email.
+* *confirmPasswordReset*: Test confirming a password reset with a valid token and matching new passwords.
+* *confirmPasswordReset_withInvalidToken*: Test confirming a password reset with an invalid token.
+
+### VideoServiceTest
+* *uploadVideo*: Test video upload with valid inputs.
+* *getAllVideos*: Test retrieving all videos from the database.
+* *getVideoById*: Test retrieving a single video by its ID.
+* *getVideoById_withInvalidId*: Test retrieving a video with an invalid ID.
+* *updateVideo*: Test updating video details with valid inputs.
+* *updateVideo_withInvalidId*: Test updating video details with an invalid ID.
+* *deleteVideo*: Test deleting a video by its ID.
+* *deleteVideo_withInvalidId*: Test deleting a video with an invalid ID.
+* *getNextVideo*: Test retrieving the next video in the sequence.
+* *getPreviousVideo*: Test retrieving the previous video in the sequence.
+* *shareVideoLink*: Test sharing a video link via email with valid inputs.
+* *shareVideoLink_withInvalidEmail*: Test sharing a video link with an invalid email address.
 
 ### Thymeleaf Frontend
 
@@ -160,33 +185,20 @@ The application uses Thymeleaf templates for the frontend, providing a dynamic a
 ## auth/home -  index.html:
 <h3> Homepage with links to Login and Signup pages. </h3>
 <hr/>
-<a href="http://accesskeymanager-kp51.onrender.com/auth/home" target="_blank" title="Homepage">
-<img src="Homepage.PNG" width="100%" height="400px" />
+<a href=" target="_blank" title="Homepage">
+<img src="" width="100%" height="400px" />
 </a>
 <hr/>
 
 
-
-##auth/admin- -  adminPanel.html:
+## auth/admin - adminPanel.html:
 <h3> Admin page. </h3>
 <hr/>
-<a href="http://accesskeymanager-kp51.onrender.com/auth/login" target="_blank" title="UserPanel">
-<img src="AdminPanel.PNG" width="100%" height="400px" />
+<a href="" target="_blank" title="UserPanel">
+<img src="" width="100%" height="400px" />
 </a>
 <hr/>
 
-
-##auth/user
-<h3> User page. </h3>
-<hr/>
-<a href="http://accesskeymanager-kp51.onrender.com/auth/login" target="_blank" title="AdminPanel">
-<img src="UserPanel.PNG" width="100%" height="400px" />
-</a>
-<hr/>
-
-- forgot-password.html: Password reset request page.
-
-- reset-password.html: Password reset confirmation page.
 
 These templates are styled using Bootstrap for a modern and responsive design.
 
@@ -195,8 +207,8 @@ These templates are styled using Bootstrap for a modern and responsive design.
 
 1. *Clone the repository:*
    bash
-   git clone https://github.com/young-arch/AccessKeyManager.git
-   cd AccessKeyManager
+   git clone https://github.com/rafiatu55/video-app.git
+   cd video-app
    
 
 
@@ -207,29 +219,29 @@ These templates are styled using Bootstrap for a modern and responsive design.
 
 
 3. *Update Email Configuration:*
-   - Configure the email settings in application.properties:
-     properties
-     spring.mail.host=smtp.gmail.com
-     spring.mail.port=587
-     spring.mail.username=your-email@gmail.com
-     spring.mail.password=your-email-password
-     spring.mail.properties.mail.smtp.auth=true
-     spring.mail.properties.mail.smtp.starttls.enable=true
-     spring.mail.properties.mail.smtp.starttls.required=true
-     spring.mail.properties.mail.smtp.ssl.trust=smtp.gmail.com
+     * spring.mail.host=smtp.gmail.com
+     * spring.mail.port=587
+     * spring.mail.username=your-email@gmail.com
+     * spring.mail.password=your-email-password
+     * spring.mail.properties.mail.smtp.auth=true
+     * spring.mail.properties.mail.smtp.starttls.enable=true
+     * spring.mail.properties.mail.smtp.starttls.required=true
+     * spring.mail.properties.mail.smtp.ssl.trust=smtp.gmail.com
      
 
 
 4. *Build the application:*
+```
    bash
    mvn clean install
-   
+```
    
 
 5. *Run the application:*
+```
    bash
    mvn spring-boot:run
-   
+```
 
    
 ## Getting Started
@@ -264,7 +276,7 @@ I welcome contributions and participation from the community to help make this b
 
 ### Reporting Issues 🚩
 
-If you encounter any bugs or issues, please report them using the <a href="https://github.com/young-arch/AccessKeyManager/issues"> Issues</a> section of my GitHub repository. When reporting issues, please include:
+If you encounter any bugs or issues, please report them using the <a href="https://github.com/youngrafiatu55h/video-app/issues"> Issues</a> section of my GitHub repository. When reporting issues, please include:
 
 -   A clear and descriptive title.
 -   A detailed description of the problem, including steps to reproduce it.
@@ -278,5 +290,4 @@ I love receiving pull requests from the community! If you have an improvement or
 
 
 ## Contact
-For any questions or feedback, please contact gabriel.sakyi@ucc.stu.edu.gh
-```
+For any questions or feedback, please contact me on rafiatu.ibrahim@ucc.stu.edu.gh
