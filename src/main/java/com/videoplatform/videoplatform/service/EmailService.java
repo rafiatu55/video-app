@@ -28,7 +28,7 @@ public class EmailService {
             message.setSubject(subject);
             message.setText(text);
             mailSender.send(message);
-            LOGGER.info("Email sent successfully to " + to);
+            LOGGER.info("Email sent successfully to a " + to);
         }
         catch (MailSendException e){
             LOGGER.log(Level.SEVERE,"Failed to send email: " +e.getMessage(),e);
